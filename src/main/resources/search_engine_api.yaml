@@ -26,14 +26,16 @@
             "description": "The keyword to look for"
       "responses":
         200:
-          "description": "Successful response with search results"
+          "description": "Successful response with search results."
           "content":
             "text/html":
               "schema":
-                "$ref": '#/components/schemas/MainPage'
+                "$ref": '#/components/schemas/ResultsPage'
             "application/json":
               "schema":
                 "$ref": '#/components/schemas/UrlArray'
+        400:
+          "description": "This response is returned when the request is missing the query string parameter."
   "/lucky":
     "get":
       "summary": "Get best page"
@@ -43,24 +45,101 @@
           "name": "q"
           "schema":
             "type": "string"
-            "description": "The url to start crawling"
+            "description": "The keyword to look for"
       "responses":
         200:
-          "description": "Successful response"
+          "description": "Returns the URL of a page containing the keyword. This response is returned when the client requests an application/json representation."
           "content":
-            "text/html":
-              "schema":
-                "$ref": '#/components/schemas/MainPage'
             "application/json":
               "schema":
                 "$ref": '#/components/schemas/Url'
+        302:
+          "description": "Redirects to a Web page containing the keyword. This response is returned when the client requests a text/html representation."
+          "headers":
+            "Location":
+              "schema":
+                "$ref": '#/components/schemas/Url'
+        400:
+          "description": "This response is returned when the request is missing the query string parameter."
+        404:
+          "description": "This response is returned when no page is found for the given keyword."
+
+
+  # Admin Endpoints
+  /admin/crawl:
+    post:
+      summary: "Launch a new crawling operation"
+      responses:
+        202:
+          description: "Crawling operation started"
+        500:
+          description: "Internal server error"
+  /admin/regenerate-index:
+    post:
+      summary: "Regenerate the flipped index"
+      responses:
+        202:
+          description: "Index regeneration started"
+        500:
+          description: "Internal server error"
+  /admin/delete-url:
+    delete:
+      summary: "Delete a URL from the index"
+      parameters:
+        - in: "query"
+          name: "url"
+          schema:
+            type: "string"
+            format: "uri"
+            description: "The URL to be deleted"
+      responses:
+        200:
+          description: "URL deleted successfully"
+        400:
+          description: "Invalid URL provided"
+        404:
+          description: "URL not found in index"
+        500:
+          description: "Internal server error"
+  /admin/update-url:
+    put:
+      summary: "Update (or add) the information concerning a given URL in the index"
+      parameters:
+        - in: "query"
+          name: "url"
+          schema:
+            type: "string"
+            format: "uri"
+            description: "The URL to be updated or added"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UrlInfo'
+      responses:
+        200:
+          description: "URL updated/added successfully"
+        400:
+          description: "Invalid data provided"
+        500:
+          description: "Internal server error"
+
+
+
 
 "components":
   "schemas":
     "MainPage":
       "type": "string"
+      "description": "The main HTML page that you have to create."
+    "ResultsPage":
+      "type": "string"
+      "description": "A HTML page containing the same information as the main page with additional links to the search results."
     "Url":
       "type": "string"
+      "format": "uri"
+      "example": "https://api.interactions.ics.unisg.ch/hypermedia-environment/cc2247b79ac48af0"
     "UrlArray":
       "type": "array"
       "items":
