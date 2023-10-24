@@ -1,11 +1,72 @@
 <!DOCTYPE html>
-<html>
-<head><title>Hypermedia Environment</title></head>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypermedia Environment</title>
+    <!-- Bootstrap is an open source framework-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+
+    <script type="text/javascript">
+        function submitForm(action) {
+            document.getElementById('form_id').action = action;
+            document.getElementById('form_id').submit();
+        }
+    </script>
+
+    <style>
+        .btn-custom1 {
+            background-color: 	#74a7c5; /* Orange Farbe als Beispiel */
+            border-color: #467290;
+            color: white; /* Textfarbe */
+        }
+        .btn-custom2 {
+            background-color: #142e44; /* Orange Farbe als Beispiel */
+            border-color: #467290;
+            color: white; /* Textfarbe */
+        }
+
+        .navbar {
+            background-color: #142e44; /* Hellblauer Hintergrund */
+            padding: 15px; /* Fügt etwas Abstand um den Inhalt herum hinzu */
+        }
+    </style>
+</head>
+
 <body>
-<form id = "form_id" action = "/search" method = "get">
-    <!--add input for keyword-->
-    <!--add button for "Search"-->
-    <!--add button for "I'm feeling lucky"-->
-</form>
+<div class="container">
+    <section class="hero">
+        <div class="main">
+            <div class="content">
+                <header class="navbar">
+                    <div id="London" class="tabcontent">
+                        <h1 style="color: #ffffff"> Assignment 2 </h1>
+                        <p style="color: #ffffff"> Task 3 - Search Engine Web server  </p>
+                    </div>
+
+                </header>
+                <div class="center">
+                    <div class="heading">
+                        <h1 class="header text-center">Hypermedia Search Engine</h1>
+                    </div>
+                    <div class="border">
+                        <form id="form_id" action="/search" method="get" class="input-group">
+                            <input type="text" name="q" class="form-control textinput input" placeholder="Enter keyword" required>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-custom1" onclick="submitForm('/search')">Search</button>
+                                <button type="button" class="btn btn-custom2" onclick="submitForm('/lucky')">I'm feeling lucky</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="footer"></section>
+</div>
+
 </body>
+
 </html>
